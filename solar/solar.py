@@ -18,7 +18,6 @@ import boto3
 
 IP = "192.168.1.68"
 URL_POWER_FLOW = "http://{}/solar_api/v1/GetPowerFlowRealtimeData.fcgi".format(IP)
-
 # http://192.168.1.68/solar_api/v1/GetPowerFlowRealtimeData.fcgi
 
 logger = logging.getLogger()
@@ -27,7 +26,7 @@ def list_environment():
     for k, v in os.environ.items():
         print(f'{k}={v}')
 
-def main2(host:str):
+def main():
     list_environment()
     firehose = boto3.client('firehose', region_name='eu-west-1')
 
@@ -54,7 +53,7 @@ def main2(host:str):
         sleep(60)
 
 
-async def main(loop, host):
+async def main_old(loop, host):
     async with aiohttp.ClientSession(loop=loop) as session:
         fronius = pyfronius.Fronius(session, host)
         session = boto3.session.Session(profile_name='fredrik_dev2')
@@ -107,4 +106,4 @@ async def main(loop, host):
 #     loop = asyncio.get_event_loop()
 #     loop.run_until_complete(main(loop, "http://192.168.1.68"))
 
-main2(host="192.168.1.68")
+main()
