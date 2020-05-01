@@ -12,8 +12,8 @@ import pyfronius
 import boto3
 
 # os.environ["AWS_REGION"] = "eu-west-1"
-os.environ["AWS_ACCESS_KEY_ID"] = ""
-os.environ["AWS_SECRET_ACCESS_KEY"] = ""
+#os.environ["AWS_ACCESS_KEY_ID"] = ""
+#os.environ["AWS_SECRET_ACCESS_KEY"] = ""
 # os.environ["AWS_SESSION_TOKEN"] = ""
 
 IP = "192.168.1.68"
@@ -21,7 +21,14 @@ URL_POWER_FLOW = "http://{}/solar_api/v1/GetPowerFlowRealtimeData.fcgi".format(I
 
 # http://192.168.1.68/solar_api/v1/GetPowerFlowRealtimeData.fcgi
 
+logger = logging.getLogger()
+
+def list_environment():
+    for k, v in os.environ.items():
+        print(f'{k}={v}')
+
 def main2(host:str):
+    list_environment()
     firehose = boto3.client('firehose', region_name='eu-west-1')
 
     while(True):
