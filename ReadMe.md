@@ -67,7 +67,23 @@ scp solar-pkg-fredrik-0.0.1.tar.gz pi@192.168.1.238:
 
 Start every hour at minute 0 every day 
 ```
-0 * * * * /home/pi/solar/solar-pkg-fredrik-0.0.1/start_solar_service.sh # >/dev/null 2>&1
+0 * * * * /bin/bash -c "./solar/solar-pkg-fredrik-0.0.1/solar/start_solar_service.sh   >> /tmp/solar.log  2>&1"
+```
+
+# Enable crontab logging
+You can enable logging for cron jobs in order to track problems. You need to edit the /etc/rsyslog.conf file and make 
+sure you have the following line uncommented:
+
+```
+cron.*                          /var/log/cron.log
+
+```
+ 
+Then restart rsyslog and cron:
+    
+```
+sudo service rsyslog restart
+sudo service cron restart
 ```
 
 # script on raspberry pi to start program
@@ -101,7 +117,7 @@ cd /home/pi/solar/solar-pkg-fredrik-0.0.1/solar
 
 source ./credentials.sh
 source venv/bin/activate
-python solar/solar.py
+python solar.py
  
 # 
 # exit your program calling onexit
