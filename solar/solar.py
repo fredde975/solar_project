@@ -10,17 +10,19 @@ import pyfronius
 import boto3
 import socket
 
-
 # os.environ["AWS_REGION"] = "eu-west-1"
-#os.environ["AWS_ACCESS_KEY_ID"] = ""
-#os.environ["AWS_SECRET_ACCESS_KEY"] = ""
+# os.environ["AWS_ACCESS_KEY_ID"] = ""
+# os.environ["AWS_SECRET_ACCESS_KEY"] = ""
 # os.environ["AWS_SESSION_TOKEN"] = ""
 
+# http://192.168.1.68/solar_api/v1/GetPowerFlowRealtimeData.fcgi
 IP = "192.168.1.68"
 URL_POWER_FLOW = "http://{}/solar_api/v1/GetPowerFlowRealtimeData.fcgi".format(IP)
-# http://192.168.1.68/solar_api/v1/GetPowerFlowRealtimeData.fcgi
+VERSION = "1.1"
+CHANGE_LOG = "1.1 - Added source IP and Hostname to the json"
 
 logger = logging.getLogger()
+
 
 def find_my_ip() -> tuple:
     hostname = socket.gethostname()
@@ -29,28 +31,31 @@ def find_my_ip() -> tuple:
     print("Your Computer IP Address is:" + ip_addr)
     return ip_addr, hostname
 
+
 def list_environment():
     for k, v in os.environ.items():
-        print(f'{k}={v}')
+        item = f'{k}={v}'
+        print(item)
+        logger.info(item)
+
 
 def main():
-    list_environment()
+    # list_environment()
     firehose = boto3.client('firehose', region_name='eu-west-1')
     source_ip, source_host = find_my_ip()
 
-
-    while(True):
+    while (True):
         print("\n\n\n ****************************")
         res = requests.request('GET', URL_POWER_FLOW)
         power_result = json.loads(res.content)
         solar_dict = {
-            "timestamp" : power_result['Head']['Timestamp'],
-            "energy_day_wh" : power_result['Body']['Data']['Site']['E_Day'],
-            "energy_total_wh" : power_result['Body']['Data']['Site']['E_Total'],
-            "energy_year_wh" : power_result['Body']['Data']['Site']['E_Year'],
-            "current_power_wh" : power_result['Body']['Data']['Site']['P_PV'],
-            "source_ip" : source_ip,
-            "source_host" : source_host
+            "timestamp": power_result['Head']['Timestamp'],
+            "energy_day_wh": power_result['Body']['Data']['Site']['E_Day'],
+            "energy_total_wh": power_result['Body']['Data']['Site']['E_Total'],
+            "energy_year_wh": power_result['Body']['Data']['Site']['E_Year'],
+            "current_power_wh": power_result['Body']['Data']['Site']['P_PV'],
+            "source_ip": source_ip,
+            "source_host": source_host
         }
 
         logger.info("Solar info: {}".format(solar_dict))
