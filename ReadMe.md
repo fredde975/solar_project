@@ -63,6 +63,12 @@ cd dist
 scp solar-pkg-fredrik-0.0.1.tar.gz pi@192.168.1.238:
 ```
 
+# Edit crontab on RaspberryPi
+
+Start every hour at minute 0 every day 
+```
+0 * * * * /home/pi/solar/solar-pkg-fredrik-0.0.1/start_solar_service.sh # >/dev/null 2>&1
+```
 
 # script on raspberry pi to start program
 ```
@@ -91,6 +97,7 @@ date > $lock
 #
 # your script goes here
 #
+cd /home/pi/solar/solar-pkg-fredrik-0.0.1/solar
 
 source ./credentials.sh
 source venv/bin/activate
