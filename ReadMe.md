@@ -1,3 +1,7 @@
+# Things to fix
+Seems like I have to load the new s3 partitions into athena before I can query the data
+Do I need to run this in the script  "MSCK REPAIR TABLE fhbase;" ?!
+
 # setup
 ```
 sudo pip3 install virtualenv 
@@ -27,6 +31,13 @@ The data is partitioned with Year=2020/Month=04/Day=30/hour=13
 Uploaded data looks like this: 
 ```
 {"timestamp": "2020-04-29T16:03:18+02:00", "energy_day_wh": 30098, "energy_total_wh": 2859539.75, "energy_year_wh": 2842461.25, "current_power_wh": 1674}
+```
+
+# Athena
+```
+MSCK REPAIR TABLE fhbase; # import new partitions
+
+SELECT * FROM "solceller"."fhbase" where day = '01' order by timestamp desc
 ```
 
 # Packaging
@@ -92,6 +103,15 @@ python solar/solar.py
 onexit
 
 ```
+
+# read stout on raspberrypi
+
+```
+ps -ef                              # look for the process pid
+sudo tail -f /proc/21913/fd/1       # tail stout from process
+```
+
+
 
 # Other material
 CREATE EXTERNAL TABLE IF NOT EXISTS solceller2.solceller_table (
