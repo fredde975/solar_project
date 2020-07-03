@@ -40,6 +40,54 @@ MSCK REPAIR TABLE fhbase; # import new partitions
 SELECT * FROM "solceller"."fhbase" where day = '01' order by timestamp desc
 ```
 
+example of select:
+
+```
+SELECT * FROM "solceller"."fhbase" 
+where year = '2020'
+and month = '07'
+and day = '01'
+and hour = '00';
+```
+
+Output
+```
+timestamp	energy_day_wh	energy_total_wh	energy_year_wh	current_power_wh	source_ip	source_host	year	month	day	hour
+2020-07-01T02:31:56+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:32:57+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:33:57+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:34:58+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:35:58+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:57:08+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:58:08+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:59:09+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T03:00:09+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T03:01:09+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:06:43+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+2020-07-01T02:07:44+02:00	0	6473950.0	6456864.5		127.0.1.1	raspberrypi	2020	7	1	0
+```
+
+
+BUG!!!
+```
+Your query has the following error(s):
+
+HIVE_BAD_DATA: Error parsing field value '0.5' for field 1: For input string: "0.5"
+
+This query ran against the "solceller" database, unless qualified by the query. Please post the error message on our forum or contact customer support with Query Id: 284c4bc0-2413-4bed-aa00-540ae86a1978.
+```
+
+From file in s3:
+```
+{"timestamp": "2020-07-01T03:47:31+02:00", "energy_day_wh": 0.5, "energy_total_wh": 6473950, "energy_year_wh": 6456864.5, "current_power_wh": null, "source_ip": "127.0.1.1", "source_host": "raspberrypi"}
+{"timestamp": "2020-07-01T03:48:31+02:00", "energy_day_wh": 0.5, "energy_total_wh": 6473950, "energy_year_wh": 6456864.5, "current_power_wh": null, "source_ip": "127.0.1.1", "source_host": "raspberrypi"}
+{"timestamp": "2020-07-01T03:49:31+02:00", "energy_day_wh": 0.5, "energy_total_wh": 6473950, "energy_year_wh": 6456864.5, "current_power_wh": null, "source_ip": "127.0.1.1", "source_host": "raspberrypi"}
+{"timestamp": "2020-07-01T03:50:32+02:00", "energy_day_wh": 0.6000000238418579, "energy_total_wh": 6473950, "energy_year_wh": 6456864.5, "current_power_wh": null, "source_ip": "127.0.1.1", "source_host": "raspberrypi"}
+{"timestamp": "2020-07-01T03:51:32+02:00", "energy_day_wh": 0.6000000238418579, "energy_total_wh": 6473950, "energy_year_wh": 6456864.5, "current_power_wh": null, "source_ip": "127.0.1.1", "source_host": "raspberrypi"}
+
+```
+
+
 # Packaging
 ```
 python3 -m pip install --user --upgrade setuptools wheel
